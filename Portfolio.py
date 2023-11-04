@@ -9,6 +9,8 @@ from numpy import ndarray
 class Portfolio:
 
     def __init__(self, init_cash: float, start_date, end_date):
+        self.cVaR_alpha = None
+        self.VaR_alpha = None
         self.portfolio_returns = None
         self.init_cash = init_cash
         self.total_weight = 1
@@ -18,6 +20,8 @@ class Portfolio:
         self.pct_return = None
         self.pct_mean_return = None
         self.pct_cov_matrix = None
+        self.VaR = None
+        self.cVaR = None
 
         if start_date > end_date:
             raise Exception("Start time is greater than end time")
@@ -28,7 +32,7 @@ class Portfolio:
 
     def add_stock(self, stock: str, weight: float):
         if self.total_weight < weight:
-            raise Exception(f"Weight is too large, available weight: {round(self.total_weight,1)}")
+            raise Exception(f"Weight is too large, available weight: {round(self.total_weight, 1)}")
 
         if stock in self.stocks:
             raise Exception("Stock already exists, enter a new stock")
@@ -82,18 +86,35 @@ class Portfolio:
         plt.plot(self.portfolio_returns)
         plt.ylabel('Portfolio Value ($)')
         plt.xlabel('Days')
-        plt.title('MC simulation of a stock portfolio')
+
+
+        # if self.VaR  and self.cVaR exist, plot them on chart
+        if self.VaR and self.cVaR:
+            plt.axhline(y=self.VaR, color='r', linestyle=':', linewidth=4)
+            plt.axhline(y=self.cVaR, color='g', linestyle=':', linewidth=4)
+            plt.legend(['Portfolio Value',
+                        f'VaR: {self.VaR}',
+                        f'cVaR: {self.cVaR}'],
+                       loc='upper left')
+            print(self.VaR_alpha)
+            plt.title(f'Portfolio Performance with VaR(alpha={self.VaR_alpha}) '
+                      f'& cVaR(alpha={self.cVaR_alpha})')
         plt.show()
 
-    def get_VaR(self, alpha: float) -> float:
+    def get_VaR(self, alpha: float) -> int:
+        if self.VaR_alpha is None:
+            self.VaR_alpha = alpha
         if self.portfolio_returns is None:
             raise Exception("No Monte Carlo simulation has been applied")
 
-        return np.quantile(self.portfolio_returns[-1, :], alpha)
+        self.VaR = round(np.quantile(self.portfolio_returns[-1, :], self.VaR_alpha), 1)
+        return self.VaR
 
     def get_conditional_VaR(self, alpha: float) -> ndarray:
+        self.cVaR_alpha = alpha
         if self.portfolio_returns is None:
             raise Exception("No Monte Carlo simulation has been applied")
 
-        var = self.get_VaR(alpha)
-        return np.mean(self.portfolio_returns[-1, :][self.portfolio_returns[-1, :] < var])
+        var = self.get_VaR(self.cVaR_alpha)
+        self.cVaR = round(np.mean(self.portfolio_returns[-1, :][self.portfolio_returns[-1, :] < var]),1)
+        return self.cVaR
