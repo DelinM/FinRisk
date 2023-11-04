@@ -83,22 +83,22 @@ class Portfolio:
         self.portfolio_returns = portfolio_returns
 
     def plot_monte_carlo(self):
+
+        plt.figure(figsize=(12, 8))
         plt.plot(self.portfolio_returns)
-        plt.ylabel('Portfolio Value ($)')
-        plt.xlabel('Days')
+        plt.ylabel('Portfolio Value ($)', fontsize=12)
+        plt.xlabel('Days', fontsize=12)
 
 
         # if self.VaR  and self.cVaR exist, plot them on chart
         if self.VaR and self.cVaR:
-            plt.axhline(y=self.VaR, color='r', linestyle=':', linewidth=4)
-            plt.axhline(y=self.cVaR, color='g', linestyle=':', linewidth=4)
-            plt.legend(['Portfolio Value',
-                        f'VaR: {self.VaR}',
-                        f'cVaR: {self.cVaR}'],
-                       loc='upper left')
+            plt.axhline(y=self.VaR, color='r', linestyle=':', linewidth=4, label=f'VaR: {self.VaR}')
+            plt.axhline(y=self.cVaR, color='g', linestyle=':', linewidth=4, label=f'cVaR: {self.cVaR}')
+            plt.legend(loc='upper left', fontsize=12)
             print(self.VaR_alpha)
             plt.title(f'Portfolio Performance with VaR(alpha={self.VaR_alpha}) '
-                      f'& cVaR(alpha={self.cVaR_alpha})')
+                      f'& cVaR(alpha={self.cVaR_alpha})', fontsize=15)
+        plt.margins(0.02)
         plt.show()
 
     def get_VaR(self, alpha: float) -> int:
