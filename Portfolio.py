@@ -31,8 +31,9 @@ class Portfolio:
         return len(info) > 0
 
     def add_stock(self, stock: str, weight: float):
-        if self.total_weight < weight:
-            raise Exception(f"Weight is too large, available weight: {round(self.total_weight, 1)}")
+        if round(self.total_weight, 1) < weight:
+            raise Exception(f"Weight is too large, available weight: {self.total_weight}, "
+                            f"provided weight: {weight})")
 
         if stock in self.stocks:
             raise Exception("Stock already exists, enter a new stock")
