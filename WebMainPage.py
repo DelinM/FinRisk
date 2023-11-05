@@ -40,7 +40,7 @@ if not st.session_state.load_portfolio:
         # plot the portfolio returns
         st.subheader("Portfolio Returns")
         st.line_chart(my_portfolio_returns, use_container_width=True, height=500, width=250)
-        
+
 
 
 
