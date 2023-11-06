@@ -48,23 +48,17 @@ if not st.session_state.load_portfolio:
         with col3:
             st.text(f"Portfolio cVaR: {my_protfolio.cVaR}")
 
-
         st.subheader("Portfolio Returns")
         st.line_chart(my_portfolio_returns, use_container_width=True, height=500, width=250)
-
 
         # convert my_portfolio_returns ndarray to dataframe
         df = pd.DataFrame(my_portfolio_returns)
 
-
         st.download_button(label="Download Portfolio Returns",
-                            data=df.to_csv(),
-                            file_name="Portfolio Returns.csv",
-                            mime="text/csv")
-
-
-
-
+                           data=df.to_csv(),
+                           file_name="Portfolio Returns.csv",
+                           mime="text/csv")
+        
     else:
         st.text("Please load portfolio!")
 
