@@ -1,8 +1,6 @@
 import streamlit as st
 import yfinance
 import datetime as dt
-import altair as alt
-import pandas as pd
 
 
 def create_state_variable(key: str, default_value: any) -> None:

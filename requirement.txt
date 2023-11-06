@@ -1,15 +1,4 @@
-scipy
-matplotlib
-numpy==1.18.1
+numpy
 pandas
-seaborn
-plotly
-lmfit
-imageio
-tabulate
-sklearn
-gsheetsdb
-youtube_transcript_api
 yfinance
-patsy
 statsmodels
