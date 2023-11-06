@@ -34,8 +34,9 @@ def preview_stock(session_state_name: str) -> None:
 
 
 def create_date_input(state_variable: str,
+                      present_text: str,
                       default_value: str,
                       key: str) -> None:
     create_state_variable(state_variable, None)
 
-    st.session_state[state_variable] = st.date_input("Start Date", value=default_value, key=key)
+    st.session_state[state_variable] = st.date_input(present_text, value=default_value, key=key)

@@ -40,6 +40,7 @@ def load_sidebar() -> None:
 
         # start date
         tools.create_date_input(state_variable="start_date",
+                                present_text="Start Date",
                                 default_value=dt.datetime.now() - dt.timedelta(days=365),
                                 key="side_bar_start_date")
 
@@ -67,6 +68,7 @@ def load_sidebar() -> None:
 
         # end date
         tools.create_date_input(state_variable="end_date",
+                                present_text="End Date",
                                 default_value=dt.datetime.now(),
                                 key="side_bar_end_date")
 

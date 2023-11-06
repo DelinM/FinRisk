@@ -58,7 +58,7 @@ if not st.session_state.load_portfolio:
                            data=df.to_csv(),
                            file_name="Portfolio Returns.csv",
                            mime="text/csv")
-        
+
     else:
         st.text("Please load portfolio!")
 
