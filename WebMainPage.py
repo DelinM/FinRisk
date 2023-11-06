@@ -63,10 +63,10 @@ elif st.session_state.run_simulation_check:
         st.text(f"Portfolio Initial Investment: {my_protfolio.init_cash}")
 
     with col2:
-        st.text(f"Portfolio VaR: {my_protfolio.VaR}")
+        st.text(f"Portfolio VaR(alpha={st.session_state.VaR_alpha}): {my_protfolio.VaR}")
 
     with col3:
-        st.text(f"Portfolio cVaR: {my_protfolio.cVaR}")
+        st.text(f"Portfolio cVaR(alpha={st.session_state.cVaR_alpha}): {my_protfolio.cVaR}")
 
     st.subheader("Portfolio Returns")
     st.line_chart(my_portfolio_returns, use_container_width=True, height=500, width=250)
