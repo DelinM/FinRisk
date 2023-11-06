@@ -70,8 +70,7 @@ def load_sidebar() -> None:
                                 default_value=dt.datetime.now(),
                                 key="side_bar_end_date")
 
-
+    result = tools.click_button("load_portfolio")
     st.session_state["load_portfolio"] = st.sidebar.button("Load Portfolio",
                                                            key="side_bar_load_portfolio",
-                                                           on_click=tools.click_button("load_portfolio"))
-    st.sidebar.title(st.session_state["load_portfolio"])
+                                                           on_click=result)
