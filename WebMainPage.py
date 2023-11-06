@@ -1,3 +1,4 @@
+import pandas as pd
 import streamlit as st
 import sidebar as comp
 import stTools as tools
@@ -36,9 +37,30 @@ if not st.session_state.load_portfolio:
         my_protfolio.get_conditional_VaR(alpha=float(st.session_state.cVaR_alpha))
         my_portfolio_returns = my_protfolio.portfolio_returns
 
-        # plot the portfolio returns
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            st.text(f"Portfolio Initial Investment: {my_protfolio.init_cash}")
+
+        with col2:
+            st.text(f"Portfolio VaR: {my_protfolio.VaR}")
+
+        with col3:
+            st.text(f"Portfolio cVaR: {my_protfolio.cVaR}")
+
+
         st.subheader("Portfolio Returns")
         st.line_chart(my_portfolio_returns, use_container_width=True, height=500, width=250)
+
+
+        # convert my_portfolio_returns ndarray to dataframe
+        df = pd.DataFrame(my_portfolio_returns)
+
+
+        st.download_button(label="Download Portfolio Returns",
+                            data=df.to_csv(),
+                            file_name="Portfolio Returns.csv",
+                            mime="text/csv")
 
 
 
