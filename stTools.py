@@ -19,8 +19,15 @@ def create_stock_text_input(state_variable: str,
                                                      value=st.session_state[state_variable])
 
 
-def click_button(state_variable: str) -> None:
-    st.session_state[state_variable] = True
+def click_button_sim() -> None:
+    st.session_state["run_simulation"] = True
+    st.session_state["run_simulation_check"] = True
+
+
+def click_button_port() -> None:
+    st.session_state["load_portfolio"] = True
+    st.session_state["load_portfolio_check"] = True
+    st.session_state["run_simulation_check"] = False
 
 
 def preview_stock(session_state_name: str) -> None:
