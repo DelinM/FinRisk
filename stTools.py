@@ -32,10 +32,10 @@ def click_button_port() -> None:
 
 def preview_stock(session_state_name: str) -> None:
     st.subheader(st.session_state[session_state_name])
-    stock_1_data = yfinance.download(st.session_state[session_state_name],
+    stock_data = yfinance.download(st.session_state[session_state_name],
                                      start=dt.datetime.now() - dt.timedelta(days=365),
                                      end=dt.datetime.now())
-    stock_data = stock_1_data[['Close']]
+    stock_data = stock_data[['Close']]
 
     st.line_chart(stock_data, use_container_width=True, height=250, width=250)
 

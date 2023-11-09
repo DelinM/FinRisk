@@ -7,9 +7,6 @@ from numpy import ndarray
 class Portfolio:
 
     def __init__(self, init_cash: float, start_date, end_date):
-        self.cVaR_alpha = None
-        self.VaR_alpha = None
-        self.portfolio_returns = None
         self.init_cash = init_cash
         self.total_weight = 1
         self.stocks = {}
@@ -20,6 +17,9 @@ class Portfolio:
         self.pct_cov_matrix = None
         self.VaR = None
         self.cVaR = None
+        self.cVaR_alpha = None
+        self.VaR_alpha = None
+        self.portfolio_returns = None
 
         if start_date > end_date:
             raise Exception("Start time is greater than end time")

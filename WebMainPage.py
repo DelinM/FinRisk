@@ -45,10 +45,14 @@ elif st.session_state.run_simulation_check:
     my_protfolio = Portfolio.Portfolio(init_cash=int(st.session_state.init_cash),
                                        start_date=st.session_state.start_date,
                                        end_date=st.session_state.end_date)
-    my_protfolio.add_stock(stock=st.session_state.stock_1_name, weight=float(st.session_state.stock_1_weight))
-    my_protfolio.add_stock(stock=st.session_state.stock_2_name, weight=float(st.session_state.stock_2_weight))
-    my_protfolio.add_stock(stock=st.session_state.stock_3_name, weight=float(st.session_state.stock_3_weight))
-    my_protfolio.add_stock(stock=st.session_state.stock_4_name, weight=float(st.session_state.stock_4_weight))
+    my_protfolio.add_stock(stock=st.session_state.stock_1_name,
+                           weight=float(st.session_state.stock_1_weight))
+    my_protfolio.add_stock(stock=st.session_state.stock_2_name,
+                           weight=float(st.session_state.stock_2_weight))
+    my_protfolio.add_stock(stock=st.session_state.stock_3_name,
+                           weight=float(st.session_state.stock_3_weight))
+    my_protfolio.add_stock(stock=st.session_state.stock_4_name,
+                           weight=float(st.session_state.stock_4_weight))
 
     my_protfolio.get_portfolio_history()
     my_protfolio.apply_monte_carlo(no_simulations=int(st.session_state.no_simulations),
@@ -63,10 +67,10 @@ elif st.session_state.run_simulation_check:
         st.text(f"Portfolio Initial Investment: {my_protfolio.init_cash}")
 
     with col2:
-        st.text(f"Portfolio VaR(alpha={st.session_state.VaR_alpha}): {my_protfolio.VaR}")
+        st.text(f"Portfolio Investment with VaR(alpha={st.session_state.VaR_alpha}): {my_protfolio.VaR}")
 
     with col3:
-        st.text(f"Portfolio cVaR(alpha={st.session_state.cVaR_alpha}): {my_protfolio.cVaR}")
+        st.text(f"Portfolio Investment with cVaR(alpha={st.session_state.cVaR_alpha}): {my_protfolio.cVaR}")
 
     st.subheader("Portfolio Returns")
     st.line_chart(my_portfolio_returns, use_container_width=True, height=500, width=250)
