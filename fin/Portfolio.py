@@ -2,6 +2,7 @@ import yfinance
 import numpy as np
 import matplotlib.pyplot as plt
 from numpy import ndarray
+import Stock as Stock
 
 
 class Portfolio:
@@ -24,7 +25,7 @@ class Portfolio:
         if start_date > end_date:
             raise Exception("Start time is greater than end time")
 
-    def _validate_stock(self, stock: str) -> bool:
+    def _validate_stock(self, stock: Stock) -> bool:
         info = yfinance.Ticker(stock).history(period="7d", interval="1d")
         return len(info) > 0
 
