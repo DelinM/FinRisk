@@ -53,8 +53,8 @@ class Stock:
 
         raise Exception("Purchase price not found, please check the date or stock sticker")
 
-    def add_purchased(self, quantity: int,
-                      purchase_date: datetime.datetime) -> None:
+    def add_buy_action(self, quantity: int,
+                       purchase_date: datetime.datetime) -> None:
         """
         Add a purchase to the stock. Currently, do not support to add another
         purchase to the stock
