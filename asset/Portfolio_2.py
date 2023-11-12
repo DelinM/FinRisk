@@ -3,9 +3,11 @@ import Stock as Stock
 
 class Portfolio:
 
-    def __init__(self):
-        self.stocks = {}
+    def __init__(self, stocks: set) -> None:
+        self.stocks = stocks
 
-    def add_stock(self, stock: Stock):
+    def add_stock(self, stock: Stock) -> None:
         if isinstance(stock, Stock):
-            self.stocks[stock] = stock.weight
+            self.stocks.add(stock)
+
+    def

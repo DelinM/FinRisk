@@ -14,8 +14,13 @@ class Stock:
         self.previous_date = None
 
         self.purchased_price = None
-
         self._update_stock()
+
+    def __eq__(self, other):
+        if self.stock_name == other.stock_name:
+            return True
+        return False
+
 
     def _update_stock(self) -> None:
         """

@@ -16,6 +16,5 @@ class Monte_Carlo_Simulator:
         self.start_time = None
         self.end_time = None
 
-    def return_start_time(self):
-        print(self.start_time)
+    def
 
