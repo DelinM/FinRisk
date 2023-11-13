@@ -2,7 +2,7 @@ import pandas as pd
 import streamlit as st
 import sidebar as comp
 import stTools as tools
-from asset import Portfolio
+from assets import Portfolio
 
 st.set_page_config(
     page_title="FinRisk",
