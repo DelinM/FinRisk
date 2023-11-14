@@ -1,6 +1,5 @@
-from Collector import InfoCollector
-from Stock import Stock
-
+from assets.Collector import InfoCollector
+from assets.Stock import Stock
 
 class Portfolio:
 

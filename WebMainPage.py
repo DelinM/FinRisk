@@ -3,6 +3,12 @@ import streamlit as st
 import sidebar as comp
 import stTools as tools
 from assets import Portfolio
+from assets import Stock
+from models.MonteCarloSimulator import Monte_Carlo_Simulator
+import locale
+
+locale.setlocale(locale.LC_ALL, 'en_CA.UTF-8' )
+
 
 st.set_page_config(
     page_title="FinRisk",
@@ -23,6 +29,7 @@ if "run_simulation_check" not in st.session_state:
 if not st.session_state.load_portfolio_check:
     st.text("👈👈👈Please load portfolio in control panel!")
 
+
 elif not st.session_state.run_simulation_check and st.session_state.load_portfolio_check:
     st.subheader("Portfolio Preview")
 
@@ -42,41 +49,60 @@ elif not st.session_state.run_simulation_check and st.session_state.load_portfol
         tools.preview_stock("stock_4_name")
 
 elif st.session_state.run_simulation_check:
-    my_protfolio = Portfolio.Portfolio(init_cash=int(st.session_state.init_cash),
-                                       start_date=st.session_state.start_date,
-                                       end_date=st.session_state.end_date)
-    my_protfolio.add_stock(stock=st.session_state.stock_1_name,
-                           weight=float(st.session_state.stock_1_weight))
-    my_protfolio.add_stock(stock=st.session_state.stock_2_name,
-                           weight=float(st.session_state.stock_2_weight))
-    my_protfolio.add_stock(stock=st.session_state.stock_3_name,
-                           weight=float(st.session_state.stock_3_weight))
-    my_protfolio.add_stock(stock=st.session_state.stock_4_name,
-                           weight=float(st.session_state.stock_4_weight))
 
-    my_protfolio.get_portfolio_history()
-    my_protfolio.apply_monte_carlo(no_simulations=int(st.session_state.no_simulations),
-                                   no_days=int(st.session_state.no_days))
-    my_protfolio.get_VaR(alpha=float(st.session_state.VaR_alpha))
-    my_protfolio.get_conditional_VaR(alpha=float(st.session_state.cVaR_alpha))
-    my_portfolio_returns = my_protfolio.portfolio_returns
+    stock_1 = Stock.Stock(stock_name=st.session_state.stock_1_name)
+    stock_2 = Stock.Stock(stock_name=st.session_state.stock_2_name)
+    stock_3 = Stock.Stock(stock_name=st.session_state.stock_3_name)
+    stock_4 = Stock.Stock(stock_name=st.session_state.stock_4_name)
+
+    stock_1.add_buy_action(quantity=int(st.session_state.stock_1_share),
+                           purchase_date=st.session_state.start_date)
+    stock_2.add_buy_action(quantity=int(st.session_state.stock_2_share),
+                           purchase_date=st.session_state.start_date)
+    stock_3.add_buy_action(quantity=int(st.session_state.stock_3_share),
+                           purchase_date=st.session_state.start_date)
+    stock_4.add_buy_action(quantity=int(st.session_state.stock_4_share),
+                           purchase_date=st.session_state.start_date)
+
+    my_portfolio = Portfolio.Portfolio()
+    my_portfolio.add_stock(stock=stock_1)
+    my_portfolio.add_stock(stock=stock_2)
+    my_portfolio.add_stock(stock=stock_3)
+    my_portfolio.add_stock(stock=stock_4)
+
+    # create a monte carlo simulation
+    monte_carlo_model = Monte_Carlo_Simulator(cVaR_alpha=st.session_state.cVaR_alpha,
+                                              VaR_alpha=st.session_state.VaR_alpha)
+    monte_carlo_model.get_portfolio(portfolio=my_portfolio,
+                                    start_time=st.session_state.start_date,
+                                    end_time=st.session_state.end_date)
+    print(st.session_state.no_simulations)
+    monte_carlo_model.apply_monte_carlo(no_simulations=int(st.session_state.no_simulations),
+                                        no_days=int(st.session_state.no_days))
 
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        st.text(f"Portfolio Initial Investment: {my_protfolio.init_cash}")
+        book_amount_formatted = locale.currency(my_portfolio.book_amount, grouping=True)
+        st.text(f"Portfolio Initial Investment: {book_amount_formatted}")
 
     with col2:
-        st.text(f"Portfolio Investment with VaR(alpha={st.session_state.VaR_alpha}): {my_protfolio.VaR}")
+        VaR_alpha_formatted = locale.currency(monte_carlo_model.get_VaR(st.session_state.VaR_alpha),
+                                              grouping=True)
+        st.text(f"Investment with VaR(alpha={st.session_state.VaR_alpha}): "
+                f"{VaR_alpha_formatted}")
 
     with col3:
-        st.text(f"Portfolio Investment with cVaR(alpha={st.session_state.cVaR_alpha}): {my_protfolio.cVaR}")
+        cVaR_alpha_formatted = locale.currency(monte_carlo_model.get_conditional_VaR(st.session_state.cVaR_alpha),
+                                               grouping=True)
+        st.text(f"Investment with cVaR(alpha={st.session_state.cVaR_alpha}): "
+                f"{cVaR_alpha_formatted}")
 
     st.subheader("Portfolio Returns")
-    st.line_chart(my_portfolio_returns, use_container_width=True, height=500, width=250)
+    st.line_chart(monte_carlo_model.portfolio_returns, use_container_width=True, height=500, width=250)
 
     # convert my_portfolio_returns ndarray to dataframe
-    df = pd.DataFrame(my_portfolio_returns)
+    df = pd.DataFrame(monte_carlo_model.portfolio_returns)
 
     col1, col2, col3 = st.columns(3)
 

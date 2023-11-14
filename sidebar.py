@@ -4,7 +4,6 @@ import datetime as dt
 
 
 def load_sidebar() -> None:
-
     if "load_portfolio" not in st.session_state:
         st.session_state["load_portfolio"] = False
 
@@ -13,16 +12,8 @@ def load_sidebar() -> None:
 
     st.sidebar.title("Portfolio Building")
 
-    if "init_cash" not in st.session_state:
-        st.session_state["init_cash"] = 100
-
-    st.session_state["init_cash"] = \
-        st.sidebar.text_input("Portfolio Initial Investment ($)",
-                              key="side_bar_portfolio_init_cash",
-                              value=st.session_state["init_cash"])
-
-    # split into two columns
-    stock_col, weight_col = st.sidebar.columns(2)
+    # split into three columns
+    stock_col, share_col, date_col = st.sidebar.columns(3)
 
     with stock_col:
         # stock 1
@@ -46,39 +37,49 @@ def load_sidebar() -> None:
                                       present_text="Investment 4",
                                       key="side_bar_stock_4_name")
 
-        # start date
-        tools.create_date_input(state_variable="start_date",
-                                present_text="Start Date",
-                                default_value=dt.datetime.now() - dt.timedelta(days=365),
-                                key="side_bar_start_date")
+    with share_col:
+        # stock 1 shares
+        tools.create_stock_text_input(state_variable="stock_1_share",
+                                      default_value=str(1000),
+                                      present_text="No. of Shares",
+                                      key="side_bar_stock_1_share")
+        # stock 2 shares
+        tools.create_stock_text_input(state_variable="stock_2_share",
+                                      default_value=str(2000),
+                                      present_text="No. of Shares",
+                                      key="side_bar_stock_2_share")
+        # stock 3 shares
+        tools.create_stock_text_input(state_variable="stock_3_share",
+                                      default_value=str(3000),
+                                      present_text="No. of Shares",
+                                      key="side_bar_stock_3_share")
+        # stock 4 shares
+        tools.create_stock_text_input(state_variable="stock_4_share",
+                                      default_value=str(500),
+                                      present_text="No. of Shares",
+                                      key="side_bar_stock_4_share")
 
-    with weight_col:
-        # stock 1 weight percentage
-        tools.create_stock_text_input(state_variable="stock_1_weight",
-                                      default_value=str(0.5),
-                                      present_text="Weight 1",
-                                      key="side_bar_stock_1_weight")
-        # stock 2 weight percentage
-        tools.create_stock_text_input(state_variable="stock_2_weight",
-                                      default_value=str(0.2),
-                                      present_text="Weight 2",
-                                      key="side_bar_stock_2_weight")
-        # stock 3 weight percentage
-        tools.create_stock_text_input(state_variable="stock_3_weight",
-                                      default_value=str(0.2),
-                                      present_text="Weight 3",
-                                      key="side_bar_stock_3_weight")
-        # stock 4 weight percentage
-        tools.create_stock_text_input(state_variable="stock_4_weight",
-                                      default_value=str(0.1),
-                                      present_text="Weight 4",
-                                      key="side_bar_stock_4_weight")
-
-        # end date
-        tools.create_date_input(state_variable="end_date",
-                                present_text="End Date",
+    with date_col:
+        # stock 1 purchase date
+        tools.create_date_input(state_variable="stock_1_purchase_date",
+                                present_text="Purchase Date",
                                 default_value=dt.datetime.now(),
-                                key="side_bar_end_date")
+                                key="side_bar_stock_1_purchase_date")
+        # stock 2 purchase date
+        tools.create_date_input(state_variable="stock_2_purchase_date",
+                                present_text="Purchase Date",
+                                default_value=dt.datetime.now(),
+                                key="side_bar_stock_2_purchase_date")
+        # stock 3 purchase date
+        tools.create_date_input(state_variable="stock_3_purchase_date",
+                                present_text="Purchase Date",
+                                default_value=dt.datetime.now(),
+                                key="side_bar_stock_3_purchase_date")
+        # stock 4 purchase date
+        tools.create_date_input(state_variable="stock_4_purchase_date",
+                                present_text="Purchase Date",
+                                default_value=dt.datetime.now(),
+                                key="side_bar_stock_4_purchase_date")
 
     st.session_state["load_portfolio"] = st.sidebar.button("Load Portfolio",
                                                            key="side_bar_load_portfolio",
@@ -89,6 +90,12 @@ def load_sidebar() -> None:
     col_monte1, col_monte2 = st.sidebar.columns(2)
 
     with col_monte1:
+
+        tools.create_date_input(state_variable="start_date",
+                                present_text="History Start Date",
+                                default_value=dt.datetime.now() - dt.timedelta(days=365),
+                                key="side_bar_start_date")
+
         tools.create_stock_text_input(state_variable="no_simulations",
                                       default_value=str(100),
                                       present_text="No. of Simulations",
@@ -99,6 +106,12 @@ def load_sidebar() -> None:
                                       present_text="VaR Alpha",
                                       key="side_bar_VaR_alpha")
     with col_monte2:
+
+        tools.create_date_input(state_variable="end_date",
+                                present_text="History End Date",
+                                default_value=dt.datetime.now(),
+                                key="side_bar_end_date")
+
         tools.create_stock_text_input(state_variable="no_days",
                                       default_value=str(100),
                                       present_text="No. of Days",
@@ -112,4 +125,3 @@ def load_sidebar() -> None:
     st.session_state["run_simulation"] = st.sidebar.button("Run Simulation",
                                                            key="main_page_run_simulation",
                                                            on_click=tools.click_button_sim)
-

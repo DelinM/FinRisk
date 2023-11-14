@@ -8,14 +8,12 @@ from assets.Collector import InfoCollector
 class Monte_Carlo_Simulator:
 
     def __init__(self,
-                 no_simulations: int,
-                 no_days: int,
                  cVaR_alpha: float,
                  VaR_alpha: float):
         self.stocks = {}
         self.init_cash = 0
-        self.no_simulations = no_simulations
-        self.no_days = no_days
+        self.no_simulations = 0
+        self.no_days = 0
         self.cVaR_alpha = cVaR_alpha
         self.VaR_alpha = VaR_alpha
         self.pct_mean_return = None
@@ -70,19 +68,19 @@ class Monte_Carlo_Simulator:
 
     def get_VaR(self, alpha: float) -> int:
         if self.VaR_alpha is None:
-            self.VaR_alpha = alpha
+            self.VaR_alpha = float(alpha)
         if self.portfolio_returns is None:
             raise Exception("No Monte Carlo simulation has been applied")
 
-        VaR = round(np.quantile(self.portfolio_returns[-1, :], self.VaR_alpha), 1)
+        VaR = round(np.quantile(self.portfolio_returns[-1, :], float(self.VaR_alpha)), 1)
         return VaR
 
     def get_conditional_VaR(self, alpha: float) -> ndarray:
-        self.cVaR_alpha = alpha
+        self.cVaR_alpha = float(alpha)
         if self.portfolio_returns is None:
             raise Exception("No Monte Carlo simulation has been applied")
 
         var = self.get_VaR(self.cVaR_alpha)
         cVaR = round(np.mean(self.portfolio_returns[-1, :]
-                                  [self.portfolio_returns[-1, :] < var]),1)
+                                  [self.portfolio_returns[-1, :] < float(var)]),1)
         return cVaR

@@ -1,5 +1,5 @@
 import datetime
-from Collector import InfoCollector
+from assets.Collector import InfoCollector
 
 
 class Stock:
