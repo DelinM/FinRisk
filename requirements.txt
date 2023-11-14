@@ -137,3 +137,4 @@ websocket-client==1.6.4
 widgetsnbextension==4.0.9
 yfinance==0.2.31
 zipp==3.17.0
+locale
