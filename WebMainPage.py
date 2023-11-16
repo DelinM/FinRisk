@@ -82,20 +82,20 @@ elif st.session_state.run_simulation_check:
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        # book_amount_formatted = locale.currency(my_portfolio.book_amount, grouping=True)
-        st.text(f"Portfolio Initial Investment: ${my_portfolio.book_amount:.2f}")
+        book_amount_formatted = locale.currency(my_portfolio.book_amount, grouping=True)
+        st.text(f"Portfolio Initial Investment: {book_amount_formatted}")
 
     with col2:
-        # VaR_alpha_formatted = locale.currency(monte_carlo_model.get_VaR(st.session_state.VaR_alpha),
-        #                                       grouping=True)
+        VaR_alpha_formatted = locale.currency(monte_carlo_model.get_VaR(st.session_state.VaR_alpha),
+                                              grouping=True)
         st.text(f"Investment with VaR(alpha={st.session_state.VaR_alpha}): "
-                f"${monte_carlo_model.get_VaR(st.session_state.VaR_alpha):.2f}")
+                f"{VaR_alpha_formatted}")
 
     with col3:
-        # cVaR_alpha_formatted = locale.currency(monte_carlo_model.get_conditional_VaR(st.session_state.cVaR_alpha),
-        #                                        grouping=True)
+        cVaR_alpha_formatted = locale.currency(monte_carlo_model.get_conditional_VaR(st.session_state.cVaR_alpha),
+                                               grouping=True)
         st.text(f"Investment with cVaR(alpha={st.session_state.cVaR_alpha}): "
-                f"${monte_carlo_model.get_conditional_VaR(st.session_state.cVaR_alpha):.2f}")
+                f"{cVaR_alpha_formatted}")
 
     st.subheader("Portfolio Returns")
     st.line_chart(monte_carlo_model.portfolio_returns, use_container_width=True, height=500, width=250)
