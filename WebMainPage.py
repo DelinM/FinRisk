@@ -5,9 +5,9 @@ import stTools as tools
 from assets import Portfolio
 from assets import Stock
 from models.MonteCarloSimulator import Monte_Carlo_Simulator
-import locale
-
-locale.setlocale(locale.LC_ALL, 'en_CA.UTF-8' )
+# import locale
+#
+# locale.setlocale(locale.LC_ALL, 'en_CA.UTF-8' )
 
 
 st.set_page_config(
