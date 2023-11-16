@@ -1,19 +1,28 @@
 import streamlit as st
 import stTools as tools
 import datetime as dt
+import random
 
 
 def load_sidebar() -> None:
+    # inject custom CSS to set the width of the sidebar
+    tools.create_side_bar_width()
+
+    st.sidebar.title("Control Panel")
+
+
     if "load_portfolio" not in st.session_state:
         st.session_state["load_portfolio"] = False
 
     if "run_simulation" not in st.session_state:
         st.session_state["run_simulation"] = False
 
-    st.sidebar.title("Portfolio Building")
+    portfo_tab, model_tab = st.sidebar.tabs(["📈 Create Portfolio", "🐂 Build Risk Model"])
+
+    portfo_tab.title("Portfolio Building")
 
     # split into three columns
-    stock_col, share_col, date_col = st.sidebar.columns(3)
+    stock_col, share_col, date_col = portfo_tab.columns(3)
 
     with stock_col:
         # stock 1
@@ -63,31 +72,31 @@ def load_sidebar() -> None:
         # stock 1 purchase date
         tools.create_date_input(state_variable="stock_1_purchase_date",
                                 present_text="Purchase Date",
-                                default_value=dt.datetime.now(),
+                                default_value=dt.datetime.now() - dt.timedelta(days=random.randint(50,100)),
                                 key="side_bar_stock_1_purchase_date")
         # stock 2 purchase date
         tools.create_date_input(state_variable="stock_2_purchase_date",
                                 present_text="Purchase Date",
-                                default_value=dt.datetime.now(),
+                                default_value=dt.datetime.now() - dt.timedelta(days=random.randint(50,100)),
                                 key="side_bar_stock_2_purchase_date")
         # stock 3 purchase date
         tools.create_date_input(state_variable="stock_3_purchase_date",
                                 present_text="Purchase Date",
-                                default_value=dt.datetime.now(),
+                                default_value=dt.datetime.now() - dt.timedelta(days=random.randint(50,100)),
                                 key="side_bar_stock_3_purchase_date")
         # stock 4 purchase date
         tools.create_date_input(state_variable="stock_4_purchase_date",
                                 present_text="Purchase Date",
-                                default_value=dt.datetime.now(),
+                                default_value=dt.datetime.now() - dt.timedelta(days=random.randint(50,100)),
                                 key="side_bar_stock_4_purchase_date")
 
-    st.session_state["load_portfolio"] = st.sidebar.button("Load Portfolio",
+    st.session_state["load_portfolio"] = portfo_tab.button("Load Portfolio",
                                                            key="side_bar_load_portfolio",
                                                            on_click=tools.click_button_port)
 
-    st.sidebar.title("Risk Model Building")
+    model_tab.title("Risk Model Building")
 
-    col_monte1, col_monte2 = st.sidebar.columns(2)
+    col_monte1, col_monte2 = model_tab.columns(2)
 
     with col_monte1:
 
@@ -122,6 +131,6 @@ def load_sidebar() -> None:
                                       present_text="cVaR Alpha",
                                       key="side_bar_cVaR_alpha")
 
-    st.session_state["run_simulation"] = st.sidebar.button("Run Simulation",
+    st.session_state["run_simulation"] = model_tab.button("Run Simulation",
                                                            key="main_page_run_simulation",
                                                            on_click=tools.click_button_sim)

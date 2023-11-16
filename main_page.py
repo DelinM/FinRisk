@@ -1,13 +1,10 @@
 import pandas as pd
 import streamlit as st
-import sidebar as comp
+import side_bar as comp
 import stTools as tools
 from assets import Portfolio
 from assets import Stock
 from models.MonteCarloSimulator import Monte_Carlo_Simulator
-import locale
-
-locale.setlocale(locale.LC_ALL, '')
 
 st.set_page_config(
     page_title="FinRisk",
@@ -36,16 +33,20 @@ elif not st.session_state.run_simulation_check and st.session_state.load_portfol
     col_stock1, col_stock_2, col_stock_3, col_stock_4 = st.columns(4)
 
     with col_stock1:
-        tools.preview_stock("stock_1_name")
+        tools.preview_stock("stock_1_name",
+                            start_date=st.session_state.stock_1_purchase_date)
 
     with col_stock_2:
-        tools.preview_stock("stock_2_name")
+        tools.preview_stock("stock_2_name",
+                            start_date=st.session_state.stock_2_purchase_date)
 
     with col_stock_3:
-        tools.preview_stock("stock_3_name")
+        tools.preview_stock("stock_3_name",
+                            start_date=st.session_state.stock_3_purchase_date)
 
     with col_stock_4:
-        tools.preview_stock("stock_4_name")
+        tools.preview_stock("stock_4_name",
+                            start_date=st.session_state.stock_4_purchase_date)
 
 elif st.session_state.run_simulation_check:
 
@@ -82,18 +83,17 @@ elif st.session_state.run_simulation_check:
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        book_amount_formatted = locale.currency(my_portfolio.book_amount, grouping=True)
+        book_amount_formatted = tools.format_currency(my_portfolio.book_amount)
         st.text(f"Portfolio Initial Investment: {book_amount_formatted}")
 
     with col2:
-        VaR_alpha_formatted = locale.currency(monte_carlo_model.get_VaR(st.session_state.VaR_alpha),
-                                              grouping=True)
+        VaR_alpha_formatted = tools.format_currency(monte_carlo_model.get_VaR(st.session_state.VaR_alpha))
         st.text(f"Investment with VaR(alpha={st.session_state.VaR_alpha}): "
                 f"{VaR_alpha_formatted}")
 
     with col3:
-        cVaR_alpha_formatted = locale.currency(monte_carlo_model.get_conditional_VaR(st.session_state.cVaR_alpha),
-                                               grouping=True)
+        cVaR_alpha_formatted = tools.format_currency(monte_carlo_model.
+                                                     get_conditional_VaR(st.session_state.cVaR_alpha))
         st.text(f"Investment with cVaR(alpha={st.session_state.cVaR_alpha}): "
                 f"{cVaR_alpha_formatted}")
 
