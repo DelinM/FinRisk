@@ -5,6 +5,7 @@ import stTools as tools
 from assets import Portfolio
 from assets import Stock
 from models.MonteCarloSimulator import Monte_Carlo_Simulator
+import default_page
 
 st.set_page_config(
     page_title="FinRisk",
@@ -12,7 +13,9 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("Financial Risk Management Simulation - FinRisk")
+tools.remove_white_space()
+
+st.title("Investment Risk Management Simulation")
 
 comp.load_sidebar()
 
@@ -23,7 +26,8 @@ if "run_simulation_check" not in st.session_state:
     st.session_state["run_simulation_check"] = False
 
 if not st.session_state.load_portfolio_check:
-    st.text("👈👈👈Please load portfolio in control panel!")
+    default_page.load_default_page()
+
 
 
 elif not st.session_state.run_simulation_check and st.session_state.load_portfolio_check:
@@ -87,7 +91,8 @@ elif st.session_state.run_simulation_check:
         st.text(f"Portfolio Initial Investment: {book_amount_formatted}")
 
     with col2:
-        VaR_alpha_formatted = tools.format_currency(monte_carlo_model.get_VaR(st.session_state.VaR_alpha))
+        VaR_alpha_formatted = tools.format_currency(monte_carlo_model.
+                                                    get_VaR(st.session_state.VaR_alpha))
         st.text(f"Investment with VaR(alpha={st.session_state.VaR_alpha}): "
                 f"{VaR_alpha_formatted}")
 

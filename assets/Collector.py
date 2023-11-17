@@ -32,6 +32,15 @@ class InfoCollector:
                               start=start, end=end)
 
     @staticmethod
+    def get_demo_daily_history(interval: str):
+        return InfoCollector.get_history(
+            ticker=yfinance.Ticker("AAPL"),
+            period="1d",
+            interval=interval,
+            start="2023-11-15",
+            end="2023-11-16")
+
+    @staticmethod
     def get_prev_date(stock_info: pd.DataFrame):
         return stock_info.index[0]
 
