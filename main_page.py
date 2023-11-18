@@ -29,7 +29,6 @@ if not st.session_state.load_portfolio_check:
     default_page.load_default_page()
 
 
-
 elif not st.session_state.run_simulation_check and st.session_state.load_portfolio_check:
     st.subheader("Portfolio Preview")
 

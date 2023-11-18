@@ -1,10 +1,8 @@
 import streamlit as st
 import stTools as tools
-import pandas as pd
-import random
+
 
 def load_default_page():
-    st.text("👈👈👈Please load portfolio in control panel!")
     st.subheader(f"Market Preview")
 
     col_stock1, col_stock_2, col_stock_3, col_stock_4 = st.columns(4)
@@ -29,7 +27,7 @@ def load_default_page():
     col_sector1, col_sector2 = st.columns(2)
 
     with col_sector1:
-        st.subheader(f"Blue Chip Stocks")
+        st.subheader(f"Tech Stocks")
         stock_list = ["AAPL", "MSFT", "AMZN", "GOOG", "META", "TSLA", "NVDA", "AVGO"]
         stock_name = ["Apple", "Microsoft", "Amazon", "Google", "Meta", "Tesla", "Nvidia", "Broadcom"]
 

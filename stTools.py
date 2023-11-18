@@ -72,7 +72,7 @@ def create_side_bar_width():
         """
         <style>
             section[data-testid="stSidebar"] {
-                width: 500x !important;
+                width: 5x !important;
             }
         </style>
         """,
@@ -84,9 +84,6 @@ def remove_white_space():
             <style>
                    .block-container {
                         padding-top: 1rem;
-                        padding-bottom: 0rem;
-                        padding-left: 5rem;
-                        padding-right: 5rem;
                     }
             </style>
             """, unsafe_allow_html=True)
@@ -129,7 +126,7 @@ def create_candle_stick_plot(stock_ticker_name: str, stock_name: str) -> None:
 
 
 def create_stocks_dataframe(stock_ticker_list: list,
-                            stock_name: list) -> None:
+                            stock_name: list) -> pd.DataFrame:
     close_price = []
     daily_change = []
     pct_change = []
