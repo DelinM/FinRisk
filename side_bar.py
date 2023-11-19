@@ -1,7 +1,8 @@
 import streamlit as st
 import stTools as tools
-import datetime as dt
 import random
+import datetime as dt
+import side_bar_components
 
 
 def load_sidebar() -> None:
@@ -10,16 +11,24 @@ def load_sidebar() -> None:
 
     st.sidebar.title("Control Panel")
 
-
     if "load_portfolio" not in st.session_state:
         st.session_state["load_portfolio"] = False
 
     if "run_simulation" not in st.session_state:
         st.session_state["run_simulation"] = False
 
-    portfo_tab, model_tab = st.sidebar.tabs(["📈 Create Portfolio", "🐂 Build Risk Model"])
+    portfo_tab, model_tab = st.sidebar.tabs(["📈 Create Portfolio",
+                                             "🐂 Build Risk Model"])
 
     portfo_tab.title("Portfolio Building")
+
+    # Drop down menu to add stocks into portfolio
+    side_bar_components.load_sidebar_dropdown_stocks(portfo_tab)
+
+    # Text boxes to fill portfolio info
+    side_bar_components.load_sidebar_stocks(portfo_tab,
+                                            st.session_state.no_investment)
+
 
     # split into three columns
     stock_col, share_col, date_col = portfo_tab.columns(3)
@@ -72,65 +81,31 @@ def load_sidebar() -> None:
         # stock 1 purchase date
         tools.create_date_input(state_variable="stock_1_purchase_date",
                                 present_text="Purchase Date",
-                                default_value=dt.datetime.now() - dt.timedelta(days=random.randint(50,100)),
+                                default_value=dt.datetime.now() -
+                                              dt.timedelta(days=random.randint(50, 100)),
                                 key="side_bar_stock_1_purchase_date")
         # stock 2 purchase date
         tools.create_date_input(state_variable="stock_2_purchase_date",
                                 present_text="Purchase Date",
-                                default_value=dt.datetime.now() - dt.timedelta(days=random.randint(50,100)),
+                                default_value=dt.datetime.now() -
+                                              dt.timedelta(days=random.randint(50, 100)),
                                 key="side_bar_stock_2_purchase_date")
         # stock 3 purchase date
         tools.create_date_input(state_variable="stock_3_purchase_date",
                                 present_text="Purchase Date",
-                                default_value=dt.datetime.now() - dt.timedelta(days=random.randint(50,100)),
+                                default_value=dt.datetime.now() -
+                                              dt.timedelta(days=random.randint(50, 100)),
                                 key="side_bar_stock_3_purchase_date")
         # stock 4 purchase date
         tools.create_date_input(state_variable="stock_4_purchase_date",
                                 present_text="Purchase Date",
-                                default_value=dt.datetime.now() - dt.timedelta(days=random.randint(50,100)),
+                                default_value=dt.datetime.now() -
+                                              dt.timedelta(days=random.randint(50, 100)),
                                 key="side_bar_stock_4_purchase_date")
 
     st.session_state["load_portfolio"] = portfo_tab.button("Load Portfolio",
                                                            key="side_bar_load_portfolio",
                                                            on_click=tools.click_button_port)
 
-    model_tab.title("Risk Model Building")
 
-    col_monte1, col_monte2 = model_tab.columns(2)
-
-    with col_monte1:
-
-        tools.create_date_input(state_variable="start_date",
-                                present_text="History Start Date",
-                                default_value=dt.datetime.now() - dt.timedelta(days=365),
-                                key="side_bar_start_date")
-
-        tools.create_stock_text_input(state_variable="no_simulations",
-                                      default_value=str(100),
-                                      present_text="No. of Simulations",
-                                      key="main_no_simulations")
-
-        tools.create_stock_text_input(state_variable="VaR_alpha",
-                                      default_value=str(0.05),
-                                      present_text="VaR Alpha",
-                                      key="side_bar_VaR_alpha")
-    with col_monte2:
-
-        tools.create_date_input(state_variable="end_date",
-                                present_text="History End Date",
-                                default_value=dt.datetime.now(),
-                                key="side_bar_end_date")
-
-        tools.create_stock_text_input(state_variable="no_days",
-                                      default_value=str(100),
-                                      present_text="No. of Days",
-                                      key="main_no_days")
-
-        tools.create_stock_text_input(state_variable="cVaR_alpha",
-                                      default_value=str(0.05),
-                                      present_text="cVaR Alpha",
-                                      key="side_bar_cVaR_alpha")
-
-    st.session_state["run_simulation"] = model_tab.button("Run Simulation",
-                                                           key="main_page_run_simulation",
-                                                           on_click=tools.click_button_sim)
+    side_bar_components.load_sidebar_risk_model(model_tab)

@@ -5,7 +5,8 @@ import stTools as tools
 from assets import Portfolio
 from assets import Stock
 from models.MonteCarloSimulator import Monte_Carlo_Simulator
-import default_page
+import default_main_page
+import portfolio_main_page
 
 st.set_page_config(
     page_title="FinRisk",
@@ -26,30 +27,10 @@ if "run_simulation_check" not in st.session_state:
     st.session_state["run_simulation_check"] = False
 
 if not st.session_state.load_portfolio_check:
-    default_page.load_default_page()
-
+    default_main_page.load_page()
 
 elif not st.session_state.run_simulation_check and st.session_state.load_portfolio_check:
-    st.subheader("Portfolio Preview")
-
-    # create 4 columns
-    col_stock1, col_stock_2, col_stock_3, col_stock_4 = st.columns(4)
-
-    with col_stock1:
-        tools.preview_stock("stock_1_name",
-                            start_date=st.session_state.stock_1_purchase_date)
-
-    with col_stock_2:
-        tools.preview_stock("stock_2_name",
-                            start_date=st.session_state.stock_2_purchase_date)
-
-    with col_stock_3:
-        tools.preview_stock("stock_3_name",
-                            start_date=st.session_state.stock_3_purchase_date)
-
-    with col_stock_4:
-        tools.preview_stock("stock_4_name",
-                            start_date=st.session_state.stock_4_purchase_date)
+    portfolio_main_page.load_page()
 
 elif st.session_state.run_simulation_check:
 

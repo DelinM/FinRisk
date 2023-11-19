@@ -2,7 +2,7 @@ import streamlit as st
 import stTools as tools
 
 
-def load_default_page():
+def load_page():
     st.subheader(f"Market Preview")
 
     col_stock1, col_stock_2, col_stock_3, col_stock_4 = st.columns(4)

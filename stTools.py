@@ -22,6 +22,8 @@ def create_stock_text_input(state_variable: str,
     st.session_state[state_variable] = st.text_input(present_text,
                                                      key=key,
                                                      value=st.session_state[state_variable])
+def get_stock_demo_data(stock_name: str) -> dict:
+    pass
 
 
 def click_button_sim() -> None:
@@ -40,7 +42,8 @@ def preview_stock(session_state_name: str,
     st.subheader(st.session_state[session_state_name])
     stock = InfoCollector.get_ticker(st.session_state[session_state_name])
     stock_data = InfoCollector.get_history(stock, period=None,
-                                           interval='1h', start=start_date, end=dt.datetime.now())
+                                           interval='1h', start=start_date,
+                                           end=dt.datetime.now())
 
     stock_data = yfinance.download(st.session_state[session_state_name],
                                    start=start_date,
@@ -50,7 +53,8 @@ def preview_stock(session_state_name: str,
     # change index form 0 to end
     stock_data.index = range(0, len(stock_data))
 
-    st.area_chart(stock_data, use_container_width=True, height=250, width=250, color="#00fa119e")
+    st.area_chart(stock_data, use_container_width=True,
+                  height=250, width=250, color="#00fa119e")
 
 
 def create_date_input(state_variable: str,
@@ -72,7 +76,7 @@ def create_side_bar_width():
         """
         <style>
             section[data-testid="stSidebar"] {
-                width: 5x !important;
+                width: 10x !important;
             }
         </style>
         """,
@@ -162,10 +166,8 @@ def create_stocks_dataframe(stock_ticker_list: list,
     )
     return df_stocks
 
-
-# 00fa119e
-
-def win_highlight(val):
+def win_highlight(val: str) -> str:
+    color = None
     if float(val) > 0.0:
         color = '#00fa119e'
     elif float(val) < 0.0:
