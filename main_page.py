@@ -5,8 +5,8 @@ import stTools as tools
 from assets import Portfolio
 from assets import Stock
 from models.MonteCarloSimulator import Monte_Carlo_Simulator
-import default_main_page
-import portfolio_main_page
+import default_page
+import portfolio_page
 
 st.set_page_config(
     page_title="FinRisk",
@@ -27,10 +27,10 @@ if "run_simulation_check" not in st.session_state:
     st.session_state["run_simulation_check"] = False
 
 if not st.session_state.load_portfolio_check:
-    default_main_page.load_page()
+    default_page.load_page()
 
 elif not st.session_state.run_simulation_check and st.session_state.load_portfolio_check:
-    portfolio_main_page.load_page()
+    portfolio_page.load_page()
 
 elif st.session_state.run_simulation_check:
 

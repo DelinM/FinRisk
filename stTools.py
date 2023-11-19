@@ -6,6 +6,7 @@ from assets.Collector import InfoCollector
 import plotly.graph_objects as go
 from streamlit_extras.metric_cards import style_metric_cards
 import pandas as pd
+import random
 
 
 def create_state_variable(key: str, default_value: any) -> None:
@@ -22,8 +23,11 @@ def create_stock_text_input(state_variable: str,
     st.session_state[state_variable] = st.text_input(present_text,
                                                      key=key,
                                                      value=st.session_state[state_variable])
-def get_stock_demo_data(stock_name: str) -> dict:
-    pass
+
+
+def get_stock_demo_data(no_stocks: int) -> list:
+    stock_name_list = ['AAPL', 'TSLA', 'GOOG', 'MSFT']
+    return stock_name_list[:no_stocks]
 
 
 def click_button_sim() -> None:
@@ -83,6 +87,7 @@ def create_side_bar_width():
         unsafe_allow_html=True,
     )
 
+
 def remove_white_space():
     st.markdown("""
             <style>
@@ -91,6 +96,7 @@ def remove_white_space():
                     }
             </style>
             """, unsafe_allow_html=True)
+
 
 def get_current_date() -> str:
     return datetime.datetime.now().strftime('%Y-%m-%d')
@@ -165,6 +171,7 @@ def create_stocks_dataframe(stock_ticker_list: list,
         }
     )
     return df_stocks
+
 
 def win_highlight(val: str) -> str:
     color = None
