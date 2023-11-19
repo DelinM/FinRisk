@@ -34,7 +34,7 @@ def load_sidebar_stocks(port_tab: st.sidebar.tabs, no_investment: int) -> None:
                                           key=f"side_bar_stock_{demo_stock_list.index(stock) + 1}_share")
 
         with date_col:
-            time_delta = dt.timedelta(days=random.randrange(1, 40, 1))
+            time_delta = dt.timedelta(days=random.randrange(3, 120, 1))
             tools.create_date_input(state_variable=f"stock_{demo_stock_list.index(stock) + 1}_purchase_date",
                                     present_text="Purchase Date",
                                     default_value=dt.datetime.now() - time_delta,

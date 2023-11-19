@@ -6,7 +6,8 @@ from assets.Collector import InfoCollector
 import plotly.graph_objects as go
 from streamlit_extras.metric_cards import style_metric_cards
 import pandas as pd
-import random
+from assets import Portfolio
+from assets import Stock
 
 
 def create_state_variable(key: str, default_value: any) -> None:
@@ -23,6 +24,17 @@ def create_stock_text_input(state_variable: str,
     st.session_state[state_variable] = st.text_input(present_text,
                                                      key=key,
                                                      value=st.session_state[state_variable])
+
+
+def create_date_input(state_variable: str,
+                      present_text: str,
+                      default_value: str,
+                      key: str) -> None:
+    create_state_variable(state_variable, default_value)
+
+    st.session_state[state_variable] = st.date_input(present_text,
+                                                     value=st.session_state[state_variable],
+                                                     key=key)
 
 
 def get_stock_demo_data(no_stocks: int) -> list:
@@ -43,31 +55,31 @@ def click_button_port() -> None:
 
 def preview_stock(session_state_name: str,
                   start_date: datetime.datetime) -> None:
-    st.subheader(st.session_state[session_state_name])
-    stock = InfoCollector.get_ticker(st.session_state[session_state_name])
-    stock_data = InfoCollector.get_history(stock, period=None,
-                                           interval='1h', start=start_date,
-                                           end=dt.datetime.now())
-
     stock_data = yfinance.download(st.session_state[session_state_name],
                                    start=start_date,
                                    end=dt.datetime.now())
     stock_data = stock_data[['Close']]
 
+    color = None
+
+    # get price difference of close
+    diff_price = stock_data.iloc[-1]['Close'] - stock_data.iloc[0]['Close']
+    if diff_price > 0.0:
+        color = '#00fa119e'
+    elif diff_price < 0.0:
+        color = '#fa00009e'
+
     # change index form 0 to end
-    stock_data.index = range(0, len(stock_data))
+    stock_data['day(s) since buy'] = range(0, len(stock_data))
+
+    # insert metric card
+    st.metric(label=st.session_state[session_state_name],
+              value=f"{stock_data.iloc[-1]['Close']: .2f}",
+              delta=f"{diff_price: .2f}")
+    style_metric_cards()
 
     st.area_chart(stock_data, use_container_width=True,
-                  height=250, width=250, color="#00fa119e")
-
-
-def create_date_input(state_variable: str,
-                      present_text: str,
-                      default_value: str,
-                      key: str) -> None:
-    create_state_variable(state_variable, None)
-
-    st.session_state[state_variable] = st.date_input(present_text, value=default_value, key=key)
+                  height=250, width=250, color=color, x='day(s) since buy')
 
 
 def format_currency(number: float) -> str:
@@ -201,3 +213,14 @@ def create_dateframe_view(df: pd.DataFrame) -> None:
         hide_index=True,
         width=620,
     )
+
+
+def build_portfolio(no_stocks: int) -> Portfolio.Portfolio:
+    # build portfolio using portfolio class
+    my_portfolio = Portfolio.Portfolio()
+    for i in range(no_stocks):
+        stock = Stock.Stock(stock_name=st.session_state[f"stock_{i + 1}_name"])
+        stock.add_buy_action(quantity=int(st.session_state[f"stock_{i + 1}_share"]),
+                             purchase_date=st.session_state[f"stock_{i + 1}_purchase_date"])
+        my_portfolio.add_stock(stock=stock)
+    return my_portfolio
