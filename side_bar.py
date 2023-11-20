@@ -1,7 +1,5 @@
 import streamlit as st
 import stTools as tools
-import random
-import datetime as dt
 import side_bar_components
 
 

@@ -1,6 +1,7 @@
 from assets.Collector import InfoCollector
 from assets.Stock import Stock
 
+
 class Portfolio:
 
     def __init__(self) -> None:
@@ -23,6 +24,5 @@ class Portfolio:
 
     def update_market_value(self) -> None:
         for stock in self.stocks.values():
-            stock_history = InfoCollector.get_history(stock.ticker, period="1d")
-            stock_price = InfoCollector.get_daily_info(stock_history, "Close")
-            self.market_value += stock_price * stock.average_price
+            stock_market_value = stock.get_market_value()
+            self.market_value += stock_market_value

@@ -7,8 +7,8 @@ import random
 def load_sidebar_dropdown_stocks(port_tab: st.sidebar.tabs) -> None:
     # add dropdown menu for portfolio
     st.session_state["no_investment"] = port_tab.selectbox("Select No. of Investments",
-                                                           [2, 3, 4],
-                                                           index=0,
+                                                           [2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                                           index=2,
                                                            key="side_bar_portfolio_name")
 
 
@@ -27,7 +27,7 @@ def load_sidebar_stocks(port_tab: st.sidebar.tabs, no_investment: int) -> None:
                                           key=f"side_bar_stock_{demo_stock_list.index(stock) + 1}_name")
 
         with share_col:
-            no_shares = random.randrange(500, 3000, 500)
+            no_shares = random.randrange(10, 100, 10)
             tools.create_stock_text_input(state_variable=f"stock_{demo_stock_list.index(stock) + 1}_share",
                                           default_value=str(no_shares),
                                           present_text="No. of Shares",

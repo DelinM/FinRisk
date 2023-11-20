@@ -87,3 +87,19 @@ class Stock:
             raise Exception("Purchase price not found, please check the date or stock sticker")
 
         return self.average_price * self.owned_quantity
+
+    def get_market_value(self) -> float:
+        self._update_stock()
+        if self.owned_quantity == 0:
+            raise Exception("Stock not owned, please purchase first")
+
+        if self.previous_close is None:
+            raise Exception("Stock price not found, please check the date or stock sticker")
+
+        return self.previous_close * self.owned_quantity
+
+    def get_gain_loss(self) -> float:
+        return self.get_market_value() - self.get_book_cost()
+
+    def get_pct_change(self) -> float:
+        return (self.get_gain_loss() / self.get_book_cost()) * 100

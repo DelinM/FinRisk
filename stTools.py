@@ -38,7 +38,9 @@ def create_date_input(state_variable: str,
 
 
 def get_stock_demo_data(no_stocks: int) -> list:
-    stock_name_list = ['AAPL', 'TSLA', 'GOOG', 'MSFT']
+    stock_name_list = ['AAPL', 'TSLA', 'GOOG', 'MSFT',
+                       'AMZN', 'META', 'NVDA', 'PYPL',
+                       'NFLX', 'ADBE', 'INTC', 'CSCO', ]
     return stock_name_list[:no_stocks]
 
 
@@ -72,11 +74,9 @@ def preview_stock(session_state_name: str,
     # change index form 0 to end
     stock_data['day(s) since buy'] = range(0, len(stock_data))
 
-    # insert metric card
-    st.metric(label=st.session_state[session_state_name],
-              value=f"{stock_data.iloc[-1]['Close']: .2f}",
-              delta=f"{diff_price: .2f}")
-    style_metric_cards()
+    create_metric_card(label=st.session_state[session_state_name],
+                       value=f"{stock_data.iloc[-1]['Close']: .2f}",
+                       delta=f"{diff_price: .2f}")
 
     st.area_chart(stock_data, use_container_width=True,
                   height=250, width=250, color=color, x='day(s) since buy')
@@ -87,15 +87,15 @@ def format_currency(number: float) -> str:
     return formatted_number
 
 
-def create_side_bar_width():
+def create_side_bar_width() -> None:
     st.markdown(
         """
-        <style>
-            section[data-testid="stSidebar"] {
-                width: 10x !important;
-            }
-        </style>
-        """,
+       <style>
+       [data-testid="stSidebar"][aria-expanded="true"]{
+           min-width: 450px;
+           max-width: 600px;
+       }
+       """,
         unsafe_allow_html=True,
     )
 
@@ -130,11 +130,9 @@ def create_candle_stick_plot(stock_ticker_name: str, stock_name: str) -> None:
     diff_price = close_price - open_price
 
     # metric card
-    st.metric(label=stock_name,
-              value=f"{open_price: .2f}",
-              delta=f"{diff_price: .2f}")
-
-    style_metric_cards()
+    create_metric_card(label="Price",
+                       value=f"{close_price: .2f}",
+                       delta=f"{diff_price: .2f}")
 
     # candlestick chart
     candlestick_chart = go.Figure(data=[
@@ -143,7 +141,8 @@ def create_candle_stick_plot(stock_ticker_name: str, stock_name: str) -> None:
                        high=stock_data['High'],
                        low=stock_data['Low'],
                        close=stock_data['Close'])])
-    candlestick_chart.update_layout(xaxis_rangeslider_visible=False, margin=dict(l=0, r=0, t=0, b=0))
+    candlestick_chart.update_layout(xaxis_rangeslider_visible=False,
+                                    margin=dict(l=0, r=0, t=0, b=0))
     st.plotly_chart(candlestick_chart, use_container_width=True, height=100)
 
 
@@ -187,6 +186,9 @@ def create_stocks_dataframe(stock_ticker_list: list,
 
 def win_highlight(val: str) -> str:
     color = None
+    val = str(val)
+    val = val.replace(',', '')
+
     if float(val) > 0.0:
         color = '#00fa119e'
     elif float(val) < 0.0:
@@ -200,7 +202,8 @@ def create_dateframe_view(df: pd.DataFrame) -> None:
     df['pct_change'] = df['pct_change'].apply(lambda x: f'{x:,.2f}')
 
     st.dataframe(
-        df.style.map(win_highlight, subset=['daily_change', 'pct_change']),
+        df.style.map(win_highlight,
+                     subset=['daily_change', 'pct_change']),
         column_config={
             "stock_tickers": "Tickers",
             "stock_name": "Stock",
@@ -224,3 +227,33 @@ def build_portfolio(no_stocks: int) -> Portfolio.Portfolio:
                              purchase_date=st.session_state[f"stock_{i + 1}_purchase_date"])
         my_portfolio.add_stock(stock=stock)
     return my_portfolio
+
+
+def get_metric_bg_color() -> str:
+    return "#282C35"
+
+
+def create_metric_card(label: str, value: str, delta: str) -> None:
+    st.metric(label=label,
+              value=value,
+              delta=delta)
+
+    background_color = get_metric_bg_color()
+    style_metric_cards(background_color=background_color)
+
+
+def create_pie_chart(key_values: dict) -> None:
+    labels = list(key_values.keys())
+    values = list(key_values.values())
+
+    # Use `hole` to create a donut-like pie chart
+    fig = go.Figure(data=[go.Pie(labels=labels, values=values, textinfo='label+percent',
+                                 insidetextorientation='radial'
+                                 )],
+                    )
+    # do not show legend
+    fig.update_layout(xaxis_rangeslider_visible=False,
+                      margin=dict(l=20, r=20, t=20, b=20),
+                      showlegend=False)
+
+    st.plotly_chart(fig, use_container_width=True, use_container_height=True)
