@@ -27,6 +27,18 @@ def load_sidebar() -> None:
                                                            key="side_bar_load_portfolio",
                                                            on_click=tools.click_button_port)
 
+    portfo_tab.markdown("""
+        You can create a portfolio with a maximum of :green[10] investments. 
+        
+        For each investment, please provide details such as the :green[stock name], :green[number of shares], and 
+        :green[purchase date]. 
+        
+        Feel free to stick with the default values or customize them according to your preferences. 
+        
+        To simplify, the purchase price us determined based on the closing price on 
+        the purchase date.
+    """)
+
     # add model tab
     model_tab.title("Risk Model Building")
     side_bar_components.load_sidebar_risk_model(model_tab)

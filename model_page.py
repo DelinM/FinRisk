@@ -31,7 +31,7 @@ def load_page() -> None:
         st.subheader("Simulation Return (VaR)")
         VaR_alpha_formatted = tools.format_currency(monte_carlo_model.
                                                     get_VaR(st.session_state.VaR_alpha))
-        tools.create_metric_card(label=f"Day {st.session_state.no_days} with VaR()",
+        tools.create_metric_card(label=f"Day {st.session_state.no_days} with VaR(alpha-{st.session_state.VaR_alpha})",
                                  value=VaR_alpha_formatted,
                                  delta=None)
 
@@ -40,7 +40,7 @@ def load_page() -> None:
 
         cVaR_alpha_formatted = tools.format_currency(monte_carlo_model.
                                                      get_conditional_VaR(st.session_state.cVaR_alpha))
-        tools.create_metric_card(label=f"Day {st.session_state.no_days} with cVaR",
+        tools.create_metric_card(label=f"Day {st.session_state.no_days} with cVaR(alpha-{st.session_state.cVaR_alpha})",
                                  value=cVaR_alpha_formatted,
                                  delta=None)
 
