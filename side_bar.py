@@ -33,3 +33,18 @@ def load_sidebar() -> None:
     st.session_state["run_simulation"] = model_tab.button("Run Simulation",
                                                          key="main_page_run_simulation",
                                                          on_click=tools.click_button_sim)
+
+    model_tab.markdown("""
+        :green[VaR (Value at Risk)]: Think of VaR as a safety net, indicating the 
+        maximum potential loss within a confidence level, e.g., a 95% chance of not losing 
+        more than $X. It prepares you for worst-case scenarios, with alpha representing the 
+        confidence level (e.g., 5% -> 95% confidence).
+
+        :green[Conditional Value at Risk)]: CVaR goes beyond, revealing expected losses 
+        beyond the worst-case scenario. It's like a backup plan for extreme situations, 
+        with alpha denoting the confidence level (e.g., 5% -> 95% confidence).
+
+        :red[Why Should You Care?]: In a video game analogy, VaR is your character's maximum damage 
+        tolerance, while CVaR is your backup plan with health potions. Understanding these helps you make 
+        smart moves and avoid losses.
+    """)

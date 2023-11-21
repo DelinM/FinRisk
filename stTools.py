@@ -8,6 +8,7 @@ from streamlit_extras.metric_cards import style_metric_cards
 import pandas as pd
 from assets import Portfolio
 from assets import Stock
+import plotly.express as px
 
 
 def create_state_variable(key: str, default_value: any) -> None:
@@ -15,10 +16,12 @@ def create_state_variable(key: str, default_value: any) -> None:
         st.session_state[key] = default_value
 
 
-def create_stock_text_input(state_variable: str,
-                            default_value: str,
-                            present_text: str,
-                            key: str) -> None:
+def create_stock_text_input(
+        state_variable: str,
+        default_value: str,
+        present_text: str,
+        key: str
+) -> None:
     create_state_variable(state_variable, default_value)
 
     st.session_state[state_variable] = st.text_input(present_text,
@@ -26,10 +29,12 @@ def create_stock_text_input(state_variable: str,
                                                      value=st.session_state[state_variable])
 
 
-def create_date_input(state_variable: str,
-                      present_text: str,
-                      default_value: str,
-                      key: str) -> None:
+def create_date_input(
+        state_variable: str,
+        present_text: str,
+        default_value: str,
+        key: str
+) -> None:
     create_state_variable(state_variable, default_value)
 
     st.session_state[state_variable] = st.date_input(present_text,
@@ -55,8 +60,10 @@ def click_button_port() -> None:
     st.session_state["run_simulation_check"] = False
 
 
-def preview_stock(session_state_name: str,
-                  start_date: datetime.datetime) -> None:
+def preview_stock(
+        session_state_name: str,
+        start_date: datetime.datetime
+) -> None:
     stock_data = yfinance.download(st.session_state[session_state_name],
                                    start=start_date,
                                    end=dt.datetime.now())
@@ -130,7 +137,7 @@ def create_candle_stick_plot(stock_ticker_name: str, stock_name: str) -> None:
     diff_price = close_price - open_price
 
     # metric card
-    create_metric_card(label="Price",
+    create_metric_card(label=f"{stock_name}",
                        value=f"{close_price: .2f}",
                        delta=f"{diff_price: .2f}")
 
@@ -146,8 +153,7 @@ def create_candle_stick_plot(stock_ticker_name: str, stock_name: str) -> None:
     st.plotly_chart(candlestick_chart, use_container_width=True, height=100)
 
 
-def create_stocks_dataframe(stock_ticker_list: list,
-                            stock_name: list) -> pd.DataFrame:
+def create_stocks_dataframe(stock_ticker_list: list, stock_name: list) -> pd.DataFrame:
     close_price = []
     daily_change = []
     pct_change = []
@@ -189,7 +195,7 @@ def win_highlight(val: str) -> str:
     val = str(val)
     val = val.replace(',', '')
 
-    if float(val) > 0.0:
+    if float(val) >= 0.0:
         color = '#00fa119e'
     elif float(val) < 0.0:
         color = '#fa00009e'
@@ -256,4 +262,14 @@ def create_pie_chart(key_values: dict) -> None:
                       margin=dict(l=20, r=20, t=20, b=20),
                       showlegend=False)
 
+    st.plotly_chart(fig, use_container_width=True, use_container_height=True)
+
+
+def create_line_chart(portfolio_df: pd.DataFrame) -> None:
+    fig = px.line(portfolio_df)
+    fig.update_layout(xaxis_rangeslider_visible=False,
+                      margin=dict(l=20, r=20, t=20, b=20),
+                      showlegend=False,
+                      xaxis_title="Day(s) since purchase",
+                      yaxis_title="Portfolio Value ($)")
     st.plotly_chart(fig, use_container_width=True, use_container_height=True)

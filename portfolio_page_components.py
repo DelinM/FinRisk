@@ -9,7 +9,7 @@ def load_portfolio_performance_cards(
         diff_amount: float,
         pct_change: float
 ) -> None:
-    st.subheader("Portfolio Performance (with Dividends))")
+    st.subheader("Portfolio Performance")
     tools.create_metric_card(label="Book Cost of Portfolio",
                              value=tools.format_currency(portfolio_book_amount),
                              delta=None)
@@ -29,6 +29,7 @@ def load_portfolio_summary_pie() -> None:
 
     # create pie chart
     tools.create_pie_chart(book_cost_list)
+
 
 def load_portfolio_summary_table() -> None:
     st.subheader("Portfolio Summary")

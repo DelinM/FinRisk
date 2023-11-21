@@ -1,10 +1,6 @@
-import pandas as pd
 import streamlit as st
 import side_bar as comp
 import stTools as tools
-from assets import Portfolio
-from assets import Stock
-from models.MonteCarloSimulator import Monte_Carlo_Simulator
 import default_page
 import portfolio_page
 import model_page

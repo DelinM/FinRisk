@@ -1,7 +1,6 @@
 import streamlit as st
 import stTools as tools
 import portfolio_page_components
-import pandas as pd
 
 
 def load_page():

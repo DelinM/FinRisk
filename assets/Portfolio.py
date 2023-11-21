@@ -1,4 +1,3 @@
-from assets.Collector import InfoCollector
 from assets.Stock import Stock
 
 
