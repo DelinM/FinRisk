@@ -23,7 +23,7 @@ have the power to choose up to 10 stocks!For each stock in your portfolio, some
 fundamental information required: stock tickers, the specific quantity of shares, 
 and the record of purchase dates.
 
-<img src='https://github.com/DelinM/FinRisk/readmefile/portfolio_builder.png'>
+<img src='https://github.com/DelinM/FinRisk/blob/main/readmefile/portfolio_builder.png'>
 
 
 
