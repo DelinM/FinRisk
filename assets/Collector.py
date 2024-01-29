@@ -1,5 +1,6 @@
 import yfinance
 import pandas as pd
+import datetime
 
 
 class InfoCollector:
@@ -33,12 +34,16 @@ class InfoCollector:
 
     @staticmethod
     def get_demo_daily_history(interval: str):
+        # use apple's last tuesday (from today) data as demo
+        today = datetime.datetime.today()
+        last_tuesday = today - datetime.timedelta(days=(today.weekday() - 1) % 7)
+        next_day = last_tuesday + datetime.timedelta(days=1)
         return InfoCollector.get_history(
             ticker=yfinance.Ticker("AAPL"),
             period="1d",
             interval=interval,
-            start="2023-11-15",
-            end="2023-11-16")
+            start=last_tuesday.strftime("%Y-%m-%d"),
+            end=next_day.strftime("%Y-%m-%d"))
 
     @staticmethod
     def get_prev_date(stock_info: pd.DataFrame):
