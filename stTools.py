@@ -131,10 +131,11 @@ def create_candle_stick_plot(stock_ticker_name: str, stock_name: str) -> None:
 
     # get the first row open price
     open_price = stock_data.iloc[0]['Open']
-    # get the last row close price
-    close_price = stock_data.iloc[-1]['Close']
+    # get close price (use another API for accuracy)
+    close_price = InfoCollector.get_history(stock, period="1d")["Close"].item()
     # get the last row high price
     diff_price = close_price - open_price
+
 
     # metric card
     create_metric_card(label=f"{stock_name}",
