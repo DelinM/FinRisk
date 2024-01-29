@@ -5,8 +5,6 @@ import stTools as tools
 
 def add_portfolio_returns_graphs(portfolio_df: pd.DataFrame) -> None:
     tools.create_line_chart(portfolio_df)
-    # st.line_chart(portfolio_df, use_container_width=True, height=500, width=250)
-
 
 def add_download_button(df: pd.DataFrame) -> None:
     # convert my_portfolio_returns ndarray to dataframe
@@ -19,7 +17,6 @@ def add_download_button(df: pd.DataFrame) -> None:
                            data=df.to_csv(),
                            file_name="Portfolio Returns.csv",
                            mime="text/csv")
-
 
 def add_markdown() -> None:
     st.markdown(
