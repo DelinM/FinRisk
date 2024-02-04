@@ -50,7 +50,7 @@ def load_page():
         st.subheader(f"Banking")
         stock_list = ['JPM', 'BAC', 'WFC', 'GS', 'MS', 'C', 'USB', 'PNC']
         stock_name = ['JPMorgan', 'BoA', 'Wells Fargo', 'Goldman Sachs', 'Morgan Stanley',
-                       'Citigroup', 'U.S. Bancorp', 'PNC Financial Services']
+                       'Citigroup', 'U.S. Bancorp', 'PNC']
         df_stocks = tools.create_stocks_dataframe(stock_list, stock_name)
         tools.create_dateframe_view(df_stocks)
 
