@@ -17,29 +17,41 @@ def load_page() -> None:
 
     model_page_components.add_markdown()
 
-    col1, col2, col3 = st.columns(3)
+    col1, col2 = st.columns(2)
+
 
     with col1:
-        st.subheader("Initial Investment")
-        # plot initial investment as metric
-        book_amount_formatted = tools.format_currency(my_portfolio.book_amount)
-        tools.create_metric_card(label="Day 0",
-                                 value=book_amount_formatted,
+        st.subheader("Simulation Return 1")
+        VaR_alpha_formatted = tools.format_currency(monte_carlo_model.
+                                                    get_VaR(st.session_state.VaR_alpha))
+        tools.create_metric_card(label=f"Day {st.session_state.no_days} with VaR Factored in",
+                                 value=VaR_alpha_formatted,
                                  delta=None)
 
     with col2:
-        st.subheader("Simulation Return (VaR)")
-        VaR_alpha_formatted = tools.format_currency(monte_carlo_model.
-                                                    get_VaR(st.session_state.VaR_alpha))
+        st.subheader("Simulation Return 2")
+
+        cVaR_alpha_formatted = tools.format_currency(monte_carlo_model.
+                                                     get_conditional_VaR(st.session_state.cVaR_alpha))
+        tools.create_metric_card(label=f"Day {st.session_state.no_days} with CVaR Factored in",
+                                 value=cVaR_alpha_formatted,
+                                 delta=None)
+
+    # add portfolio VaR and CVaR Info
+    var_col1, var_col2 = st.columns(2)
+    with var_col1:
+        st.subheader("Portfolio VaR")
+
+        actual_var = monte_carlo_model.get_VaR(st.session_state.VaR_alpha) - my_portfolio.book_amount
+        VaR_alpha_formatted = tools.format_currency(actual_var)
         tools.create_metric_card(label=f"Day {st.session_state.no_days} with VaR(alpha-{st.session_state.VaR_alpha})",
                                  value=VaR_alpha_formatted,
                                  delta=None)
 
-    with col3:
-        st.subheader("Simulation Return (cVaR)")
-
-        cVaR_alpha_formatted = tools.format_currency(monte_carlo_model.
-                                                     get_conditional_VaR(st.session_state.cVaR_alpha))
+    with var_col2:
+        st.subheader("Portfolio cVaR")
+        actual_cvar = monte_carlo_model.get_conditional_VaR(st.session_state.cVaR_alpha) - my_portfolio.book_amount
+        cVaR_alpha_formatted = tools.format_currency(actual_cvar)
         tools.create_metric_card(label=f"Day {st.session_state.no_days} with cVaR(alpha-{st.session_state.cVaR_alpha})",
                                  value=cVaR_alpha_formatted,
                                  delta=None)
