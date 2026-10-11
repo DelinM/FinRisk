@@ -1,6 +1,5 @@
 import datetime
 import streamlit as st
-import yfinance
 import datetime as dt
 from assets.Collector import InfoCollector
 import plotly.graph_objects as go
@@ -64,9 +63,12 @@ def preview_stock(
         session_state_name: str,
         start_date: datetime.datetime
 ) -> None:
-    stock_data = yfinance.download(st.session_state[session_state_name],
-                                   start=start_date,
-                                   end=dt.datetime.now())
+    stock_data = InfoCollector.download_history(
+        st.session_state[session_state_name],
+        start_date,
+        dt.datetime.now(),
+        multi_level_index=False,
+    )
     stock_data = stock_data[['Close']]
 
     color = None
